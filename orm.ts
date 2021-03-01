@@ -2,8 +2,6 @@
 import * as path from 'path'
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
-console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-console.log(process.env.DB_HOST)
 const options: TypeOrmModuleOptions = {
 	type: 'postgres',
 	host: process.env.DB_HOST,
