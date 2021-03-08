@@ -26,6 +26,7 @@ const graphQLImports = [PokemonResolver]
 			imports: [ConfigModule],
 			useFactory: async (configService: ConfigService) => ({
 				type: 'postgres',
+				url: configService.get('DATABASE_URL'),
 				host: configService.get('DB_HOST'),
 				username: configService.get('DB_USERNAME'),
 				password: configService.get('DB_PASSWORD'),

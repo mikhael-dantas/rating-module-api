@@ -7,6 +7,6 @@ export class AppService {
 
 	async getHello(): Promise<string> {
 		// querying database
-		return `Hello world`
+		return `Hello world count is ${await this.repoService.PokemonRepo.count()}`
 	}
 }
