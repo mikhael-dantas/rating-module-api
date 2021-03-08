@@ -24,26 +24,42 @@ const graphQLImports = [PokemonResolver]
 		}),
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
-			useFactory: async (configService: ConfigService) => ({
-				type: 'postgres',
-				url: configService.get('DATABASE_URL'),
-				host: configService.get('DB_HOST'),
-				username: configService.get('DB_USERNAME'),
-				password: configService.get('DB_PASSWORD'),
-				port: configService.get('DB_PORT'),
-				database: configService.get('DB_DATABASE'),
-				synchronize: false,
-				entities: [path.resolve(__dirname, 'db', 'models', '*')],
-				migrations: [path.resolve(__dirname, 'db', 'migrations', '*')],
-				cli: {
-					migrationsDir: './db/migrations',
-					entitiesDir: './db/models',
-				},
-				logging: true,
-			}),
+			useFactory: async (configService: ConfigService) =>
+				configService.get('NODE_ENV') === 'production'
+					? {
+							type: 'postgres',
+							url: configService.get('DATABASE_URL'),
+							synchronize: false,
+							entities: [path.resolve(__dirname, 'db', 'models', '*')],
+							migrations: [
+								path.resolve(__dirname, 'db', 'migrations', '*'),
+							],
+							cli: {
+								migrationsDir: './db/migrations',
+								entitiesDir: './db/models',
+							},
+							logging: true,
+					  }
+					: {
+							type: 'postgres',
+							host: configService.get('DB_HOST'),
+							username: configService.get('DB_USERNAME'),
+							password: configService.get('DB_PASSWORD'),
+							port: configService.get('DB_PORT'),
+							database: configService.get('DB_DATABASE'),
+							synchronize: false,
+							entities: [path.resolve(__dirname, 'db', 'models', '*')],
+							migrations: [
+								path.resolve(__dirname, 'db', 'migrations', '*'),
+							],
+							cli: {
+								migrationsDir: './db/migrations',
+								entitiesDir: './db/models',
+							},
+							logging: true,
+					  },
 			inject: [ConfigService],
 		}),
-		// TypeOrmModule.forRoot(ormOptions),
 		RepoModule,
 		...graphQLImports,
 		GraphQLModule.forRoot({
