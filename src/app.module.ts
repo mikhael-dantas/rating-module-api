@@ -29,6 +29,9 @@ const graphQLImports = [PokemonResolver]
 					? {
 							type: 'postgres',
 							url: configService.get('DATABASE_URL'),
+							ssl: {
+								rejectUnauthorized: false,
+							},
 							synchronize: false,
 							entities: [path.resolve(__dirname, 'db', 'models', '*')],
 							migrations: [
@@ -43,6 +46,9 @@ const graphQLImports = [PokemonResolver]
 					: {
 							type: 'postgres',
 							host: configService.get('DB_HOST'),
+							ssl: {
+								rejectUnauthorized: false,
+							},
 							username: configService.get('DB_USERNAME'),
 							password: configService.get('DB_PASSWORD'),
 							port: configService.get('DB_PORT'),
