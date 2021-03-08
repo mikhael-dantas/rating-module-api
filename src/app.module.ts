@@ -31,7 +31,7 @@ const graphQLImports = [PokemonResolver]
 				password: configService.get('DB_PASSWORD'),
 				port: configService.get('DB_PORT'),
 				database: configService.get('DB_DATABASE'),
-				synchronize: true,
+				synchronize: false,
 				entities: [path.resolve(__dirname, 'db', 'models', '*')],
 				migrations: [path.resolve(__dirname, 'db', 'migrations', '*')],
 				cli: {
