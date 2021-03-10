@@ -50,7 +50,11 @@ export class AppService {
 									data: { sprites: { front_default: 'not found' } },
 								}
 							})
-						const image = `${individualPoke.data.sprites.front_default}`
+						const image = `${
+							individualPoke.data.sprites.front_default
+								? individualPoke.data.sprites.front_default
+								: 'not found'
+						}`
 						await this.repoService.PokemonRepo.insert({
 							name: pokemonFromResults.name,
 							imageUrl: image,
