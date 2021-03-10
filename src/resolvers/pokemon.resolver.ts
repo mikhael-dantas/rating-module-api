@@ -14,7 +14,7 @@ class PokemonResolver {
 
 	@Query(() => [Pokemon])
 	public async pokemons(): Promise<Pokemon[]> {
-		return this.repoService.PokemonRepo.findAndCount({ take: 10, skip: 0 })[0]
+		return this.repoService.PokemonRepo.find({ take: 10, skip: 0 })
 	}
 
 	@Query(() => Pokemon, { nullable: true })
