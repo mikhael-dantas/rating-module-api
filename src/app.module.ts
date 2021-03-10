@@ -25,11 +25,14 @@ const graphQLImports = [PokemonResolver]
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
 			useFactory: async (configService: ConfigService) =>
-				configService.get('NODE_ENV') === 'production'
+				configService.get('NODE_ENV') === 'development'
 					? {
 							type: 'postgres',
-							url:
-								configService.get('DATABASE_URL') + '?sslmode=disable',
+							host: configService.get('DB_HOST'),
+							username: configService.get('DB_USERNAME'),
+							password: configService.get('DB_PASSWORD'),
+							port: configService.get('DB_PORT'),
+							database: configService.get('DB_DATABASE'),
 							synchronize: false,
 							entities: [path.resolve(__dirname, 'db', 'models', '*')],
 							migrations: [
@@ -43,11 +46,8 @@ const graphQLImports = [PokemonResolver]
 					  }
 					: {
 							type: 'postgres',
-							host: configService.get('DB_HOST'),
-							username: configService.get('DB_USERNAME'),
-							password: configService.get('DB_PASSWORD'),
-							port: configService.get('DB_PORT'),
-							database: configService.get('DB_DATABASE'),
+							url:
+								configService.get('DATABASE_URL') + '?sslmode=disable',
 							synchronize: false,
 							entities: [path.resolve(__dirname, 'db', 'models', '*')],
 							migrations: [
