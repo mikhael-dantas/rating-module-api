@@ -31,7 +31,9 @@ const graphQLImports = [PokemonResolver]
 					ssl:
 						configService.get('NODE_ENV') === 'development'
 							? false
-							: true,
+							: {
+									rejectUnauthorized: false,
+							  },
 					host: configService.get('DB_HOST'),
 					username: configService.get('DB_USERNAME'),
 					password: configService.get('DB_PASSWORD'),
