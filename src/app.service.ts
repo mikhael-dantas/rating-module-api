@@ -17,16 +17,6 @@ export class AppService {
 	}
 
 	async seedPokemons(): Promise<SeedSuccess> {
-		// querying database
-		// if (
-		// 	!(process.env.DB_RESET === 'available') ||
-		// 	!(process.env.DB_RESET_PASSWORD === key)
-		// ) {
-		// 	return res
-		// 		.status(401)
-		// 		.json({ success: false, message: 'resource not available' })
-		// }
-
 		try {
 			// check database
 			const pokemons = await this.repoService.PokemonRepo.find()
@@ -54,8 +44,7 @@ export class AppService {
 							.get(
 								`https://pokeapi.co/api/v2/pokemon/${pokemonFromResults.name}`,
 							)
-							.catch((err) => {
-								console.log(err)
+							.catch(() => {
 								return {
 									status: 404,
 									data: { sprites: { front_default: 'not found' } },
