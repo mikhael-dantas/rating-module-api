@@ -2,18 +2,7 @@
 import * as path from 'path'
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
-const options: TypeOrmModuleOptions = process.env.NODE_ENV === 'production' ? {
-   type: 'postgres',
-   url: process.env.DATABASE_URL + '?sslmode=disable',
-   synchronize: false,
-   entities: [path.resolve(__dirname, '..', 'db', 'models', '*')],
-   migrations: [path.resolve(__dirname, '..', 'db', 'migrations', '*')],
-   cli: {
-      migrationsDir:'dist/db/migrations',
-      entitiesDir: 'dist/db/models',
-   },
-   logging: true,
-} : {
+const options: TypeOrmModuleOptions = process.env.NODE_ENV === 'development' ? {
    type: 'postgres',
    host: process.env.DB_HOST,
    username: process.env.DB_USERNAME,
@@ -26,6 +15,17 @@ const options: TypeOrmModuleOptions = process.env.NODE_ENV === 'production' ? {
    cli: {
       migrationsDir: 'src/db/migrations',
       entitiesDir: 'src/db/models',
+   },
+   logging: true,
+} : {
+   type: 'postgres',
+   url: process.env.DATABASE_URL + '?sslmode=disable',
+   synchronize: false,
+   entities: [path.resolve(__dirname, '..', 'db', 'models', '*')],
+   migrations: [path.resolve(__dirname, '..', 'db', 'migrations', '*')],
+   cli: {
+      migrationsDir:'dist/db/migrations',
+      entitiesDir: 'dist/db/models',
    },
    logging: true,
 }
