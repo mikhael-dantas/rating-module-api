@@ -24,41 +24,32 @@ const graphQLImports = [PokemonResolver]
 		}),
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
-			useFactory: async (configService: ConfigService) =>
-				configService.get('NODE_ENV') === 'development'
-					? {
-							type: 'postgres',
-							host: configService.get('DB_HOST'),
-							username: configService.get('DB_USERNAME'),
-							password: configService.get('DB_PASSWORD'),
-							port: configService.get('DB_PORT'),
-							database: configService.get('DB_DATABASE'),
-							synchronize: false,
-							entities: [path.resolve(__dirname, 'db', 'models', '*')],
-							migrations: [
-								path.resolve(__dirname, 'db', 'migrations', '*'),
-							],
-							cli: {
-								migrationsDir: './db/migrations',
-								entitiesDir: './db/models',
-							},
-							logging: true,
-					  }
-					: {
-							type: 'postgres',
-							url:
-								configService.get('DATABASE_URL') + '?sslmode=disable',
-							synchronize: false,
-							entities: [path.resolve(__dirname, 'db', 'models', '*')],
-							migrations: [
-								path.resolve(__dirname, 'db', 'migrations', '*'),
-							],
-							cli: {
-								migrationsDir: './db/migrations',
-								entitiesDir: './db/models',
-							},
-							logging: true,
-					  },
+			useFactory: async (configService: ConfigService) => {
+				return {
+					type: 'postgres',
+					url: configService.get('DATABASE_URL'),
+					ssl:
+						configService.get('NODE_ENV') === 'development'
+							? false
+							: true,
+					host: configService.get('DB_HOST'),
+					username: configService.get('DB_USERNAME'),
+					password: configService.get('DB_PASSWORD'),
+					port: configService.get('DB_PORT'),
+					database: configService.get('DB_DATABASE'),
+					synchronize: false,
+					entities: [path.resolve(__dirname, 'db', 'models', '*')],
+					migrations: [path.resolve(__dirname, 'db', 'migrations', '*')],
+					cli: {
+						migrationsDir: './db/migrations',
+						entitiesDir: './db/models',
+					},
+					logging:
+						configService.get('NODE_ENV') === 'development'
+							? true
+							: false,
+				}
+			},
 			inject: [ConfigService],
 		}),
 		RepoModule,

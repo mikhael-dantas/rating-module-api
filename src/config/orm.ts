@@ -2,8 +2,10 @@
 import * as path from 'path'
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
-const options: TypeOrmModuleOptions = process.env.NODE_ENV === 'development' ? {
+const options: TypeOrmModuleOptions = {
    type: 'postgres',
+   url: process.env.DATABASE_URL,
+   ssl:  process.env.NODE_ENV === 'development' ? false : true,
    host: process.env.DB_HOST,
    username: process.env.DB_USERNAME,
    password: process.env.DB_PASSWORD,
@@ -13,20 +15,10 @@ const options: TypeOrmModuleOptions = process.env.NODE_ENV === 'development' ? {
    entities: [path.resolve(__dirname, '..', 'db', 'models', '*')],
    migrations: [path.resolve(__dirname, '..', 'db', 'migrations', '*')],
    cli: {
-      migrationsDir: 'src/db/migrations',
-      entitiesDir: 'src/db/models',
-   },
-   logging: true,
-} : {
-   type: 'postgres',
-   url: process.env.DATABASE_URL + '?sslmode=disable',
-   synchronize: false,
-   entities: [path.resolve(__dirname, '..', 'db', 'models', '*')],
-   migrations: [path.resolve(__dirname, '..', 'db', 'migrations', '*')],
-   cli: {
-      migrationsDir:'dist/db/migrations',
+      migrationsDir: 'dist/db/migrations',
       entitiesDir: 'dist/db/models',
    },
-   logging: true,
+   logging: process.env.NODE_ENV === 'development' ? true : false,
 }
+
 module.exports = options
