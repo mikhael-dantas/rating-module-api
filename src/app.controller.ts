@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common'
-import { AppService } from './app.service'
+import { AppService, SeedSuccess } from './app.service'
 
 @Controller()
 export class AppController {
@@ -8,5 +8,10 @@ export class AppController {
 	@Get()
 	async getHello(): Promise<string> {
 		return this.appService.getHello()
+	}
+
+	@Get('/seed')
+	async seedPokemons(): Promise<SeedSuccess> {
+		return this.appService.seedPokemons()
 	}
 }
