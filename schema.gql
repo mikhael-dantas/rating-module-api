@@ -19,12 +19,3 @@ type Query {
   pokemons: [Pokemon!]!
   pokemon(id: Float!): Pokemon
 }
-
-type Mutation {
-  createPokemon(data: PokemonInput!): Pokemon!
-}
-
-input PokemonInput {
-  name: String!
-  image_url: String!
-}
