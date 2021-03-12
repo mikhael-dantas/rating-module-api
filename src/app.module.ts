@@ -4,16 +4,11 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import * as path from 'path'
 
-// import * as ormOptions from './config/orm'
 import RepoModule from './repo.module'
 
 import { GraphQLModule } from '@nestjs/graphql'
 import PokemonResolver from './resolvers/pokemon.resolver'
-import {
-	ConfigModule,
-	ConfigService,
-	// ConfigService
-} from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 const graphQLImports = [PokemonResolver]
 
@@ -58,7 +53,7 @@ const graphQLImports = [PokemonResolver]
 		...graphQLImports,
 		GraphQLModule.forRoot({
 			autoSchemaFile: 'schema.gql',
-			playground: true,
+			playground: false,
 		}),
 	],
 	controllers: [AppController],

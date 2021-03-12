@@ -13,13 +13,19 @@ class PokemonResolver {
 	constructor(private readonly repoService: RepoService) {}
 
 	@Query(() => [Pokemon])
-	public async pokemons(): Promise<Pokemon[]> {
-		return this.repoService.PokemonRepo.find({ take: 10, skip: 0 })
+	public async pokemons(
+		@Args('take') take: number,
+		@Args('skip') skip: number,
+	): Promise<Pokemon[]> {
+		take = take ? take : 10
+		take = take > 100 ? 100 : take
+		skip = skip ? skip : 0
+		return this.repoService.PokemonRepo.find({ take: take, skip: skip })
 	}
 
 	@Query(() => Pokemon, { nullable: true })
-	public async pokemon(@Args('id') id: number): Promise<Pokemon> {
-		return this.repoService.PokemonRepo.findOne(id)
+	public async pokemon(@Args('name') name: string): Promise<Pokemon> {
+		return this.repoService.PokemonRepo.findOne({ where: { name: name } })
 	}
 
 	// @Mutation(() => Pokemon)
